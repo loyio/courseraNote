@@ -7,6 +7,5 @@ CHIP Not {
 
     IN in;
     OUT out;
-    PARTS:
-    Not(in=in, out=out);
+    BUILTIN Not;
 }
