@@ -45,23 +45,22 @@ CHIP ALU {
     Mux16(a=x, b=false, sel=zx, out=xval1); //x
     Not16(in=xval1, out=notxval);
     Mux16(a=xval1, b=notxval, sel=nx, out=xval);
+
     Mux16(a=y, b=false, sel=zy, out=yval1); //y
     Not16(in=yval1, out=notyval);
     Mux16(a=yval1, b=notyval, sel=ny, out=yval);
-    Add16(a=xval, b=yval, out=sumxy); //the sum of add
-    And16(a=xval, a=yval, out=andxy); // the And operation of two val
-    Mux16(a=andxy, b=sumxy, sel=f, out=fout);
-    Not16(in=fout, out=nout);
-    Mux16 (a=fout, b=nout, sel=no,  out=out, out[15]=neg, out[0..7]=rhalfout, out[8..15]=lhalfout);
 
-    Or8Way (in=rhalfout, out=firstOr);
-    Or8Way (in=lhalfout, out=secondOr);
-    Mux(a=true, b=false, sel=neg, out=ng);
-    Or (a=firstOr, b=secondOr, out=or16Way);
-    Not (in=or16Way, out=zr);
-    // Or8Way(in=out[0..7], out=rout);
-    // Or8Way(in=out[8..15], out=lout);
-    // Or(a=rout, b=lout, out=outOr);
-    // Mux(a=true, b=false, sel=outOr, out=zr);
-    // Mux(a=false, b=true, sel=out[15], out=test);
+    Add16(a=xval, b=yval, out=sumxy); //the sum of add
+    And16(a=xval, b=yval, out=andxy); // the And operation of two val
+    Mux16(a=andxy, b=sumxy, sel=f, out=fout);
+
+    Not16(in=fout, out=nout);
+    Mux16(a=fout, b=nout, sel=no, out=out, out[0..7]=rhalfout, out[8..15]=lhalfout, out[15]=negflag);
+
+    Or8Way(in=rhalfout, out=rout);
+    Or8Way(in=lhalfout, out=lout);
+    Or(a=rout, b=lout, out=outOr);
+    Mux(a=true, b=false, sel=outOr, out=zr); 
+    And(a=negflag, b=true, out=neg);
+    Mux(a=false, b=true, sel=neg, out=ng);
 }
