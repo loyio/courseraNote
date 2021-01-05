@@ -76,3 +76,9 @@ Layer 3:  Network layers
 
 Routers share data with each other via this protocol, which lets them learn about the most optimal paths to forward traffic;
 
+
+
+
+
+### Servers and Clients
+
